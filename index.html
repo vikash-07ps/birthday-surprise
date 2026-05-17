@@ -69,6 +69,13 @@
       cursor: not-allowed;
     }
 
+    h1,
+    .countdown,
+    .btn {
+      position: relative;
+      z-index: 2;
+    }
+
     @keyframes popIn {
       from {
         transform: scale(0.5);
@@ -137,11 +144,139 @@
 
     .fade-out {
       opacity: 0;
-      transform: scale(1.1);
-      transition: all 1s ease;
+      transform: scale(1.05);
+      transition: all 1.6s ease;
     }
 
-    
+    .curtain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .curtain.show {
+      z-index: 9999;
+    }
+
+    .curtain-panel {
+      position: absolute;
+      opacity: 0;
+      visibility: hidden;
+      transition: transform 1.8s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.4s ease, visibility 0s linear 0.4s;
+      background: linear-gradient(180deg, #8a0f36 0%, #560029 48%, #22000d 100%);
+      background-image:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0 3px, transparent 3px 18px),
+        linear-gradient(0deg, rgba(255,255,255,0.08), transparent 18%),
+        radial-gradient(circle at 24% 20%, rgba(255,255,255,0.12), transparent 9%),
+        radial-gradient(circle at 76% 18%, rgba(255,255,255,0.08), transparent 11%);
+      box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.75), inset 0 18px 100px rgba(255, 255, 255, 0.04);
+      overflow: hidden;
+    }
+
+    .curtain-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.26), transparent 40%),
+                  repeating-linear-gradient(90deg, rgba(255,255,255,0.1) 0 4px, transparent 4px 16px);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .curtain-panel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.16), transparent 18%),
+                  radial-gradient(circle at 50% 100%, rgba(0,0,0,0.18), transparent 24%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .curtain-left::before,
+    .curtain-right::before {
+      content: '';
+      position: absolute;
+      top: 10%;
+      left: 0;
+      right: 0;
+      height: 80%;
+      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.05), transparent 35%),
+                  radial-gradient(circle at 20% 50%, rgba(0,0,0,0.08), transparent 18%),
+                  radial-gradient(circle at 80% 50%, rgba(0,0,0,0.08), transparent 18%);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .curtain-left,
+    .curtain-right {
+      top: 0;
+      width: 45%;
+      height: 100%;
+    }
+
+    .curtain-top,
+    .curtain-bottom {
+      left: 0;
+      width: 100%;
+      height: 18%;
+      background: linear-gradient(180deg, rgba(196, 38, 90, 0.98), rgba(80, 18, 55, 0.96));
+      box-shadow: inset 0 14px 55px rgba(0,0,0,0.55);
+      clip-path: polygon(0 0, 10% 100%, 20% 0, 30% 100%, 40% 0, 50% 100%, 60% 0, 70% 100%, 80% 0, 90% 100%, 100% 0);
+      z-index: 2;
+    }
+
+    .curtain-left {
+      left: 0;
+      transform: translateX(-110%);
+      clip-path: polygon(0 0, 96% 10%, 96% 90%, 0 100%);
+      box-shadow: inset 0 0 90px rgba(0,0,0,0.55), inset 12px 0 48px rgba(0,0,0,0.3);
+    }
+
+    .curtain-right {
+      right: 0;
+      transform: translateX(110%);
+      clip-path: polygon(4% 10%, 100% 0, 100% 100%, 4% 90%);
+      box-shadow: inset 0 0 90px rgba(0,0,0,0.55), inset -12px 0 48px rgba(0,0,0,0.3);
+    }
+
+    .curtain-top {
+      top: 0;
+      transform: translateY(-110%);
+    }
+
+    .curtain-bottom {
+      bottom: 0;
+      transform: translateY(110%);
+    }
+
+    .curtain.show .curtain-left {
+      transform: translateX(0);
+    }
+
+    .curtain.show .curtain-panel {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .curtain.show .curtain-left {
+      transform: translateX(0);
+    }
+
+    .curtain.show .curtain-right {
+      transform: translateX(0);
+    }
+
+    .curtain.show .curtain-top {
+      transform: translateY(0);
+    }
+
+    .curtain.show .curtain-bottom {
+      transform: translateY(0);
+    }
+
   </style>
 </head>
 <body>
@@ -149,9 +284,17 @@
   <h1>Preeti are you excited for a beautiful surprise? 🎁</h1>
   <div class="countdown" id="countdown">Revealing in 10...</div>
   <button class="btn" id="surpriseBtn" onclick="startTransition()" disabled>Click here!</button>
+  <div class="curtain" id="curtain">
+    <div class="curtain-panel curtain-top"></div>
+    <div class="curtain-panel curtain-left"></div>
+    <div class="curtain-panel curtain-right"></div>
+    <div class="curtain-panel curtain-bottom"></div>
+  </div>
 
   <!-- Balloons -->
   <script>
+    const curtain = document.getElementById('curtain');
+
     // 🎈 Balloons & Confetti
     for (let i = 0; i < 15; i++) {
       const balloon = document.createElement('div');
@@ -186,16 +329,24 @@
         clearInterval(timer);
         countdownElement.textContent = "Ready to reveal!";
         button.disabled = false;
+        button.textContent = 'Click here to open the surprise';
       }
     }, 1000);
 
     // 🎬 Transition to next page
     function startTransition() {
+      button.disabled = true;
+      button.textContent = 'Opening...';
+      curtain.classList.add('show');
       document.body.classList.add('fade-out');
       setTimeout(() => {
         window.location.href = 'birthday.html'; // ⬅️ change if needed
-      }, 1000);
+      }, 1600);
     }
   </script>
 </body>
 </html>
+
+
+
+
