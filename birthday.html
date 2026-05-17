@@ -14,8 +14,10 @@
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background-image: url('photoes/background_image2.png');
-      background-size:100%;
-      background-position: center; 
+      background-size: cover;
+      background-position: top center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
       overflow-x: hidden;
     }
 
@@ -28,7 +30,7 @@
     h1 {
       font-family: 'Great Vibes', cursive;
       font-size: 3.5rem;
-      color: #c12b99;
+      color: #ab1884;
       text-shadow: 2px 2px #e57373;
     }
 
@@ -43,7 +45,7 @@
     .card {
       perspective: 1000px;
       cursor: pointer;
-      height: 600px;
+      height: 620px;
     }
 
     .card-inner {
@@ -70,12 +72,12 @@
     }
 
     .card-front {
-      background: linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%);
+      background: linear-gradient(135deg, #eba0a0 0%, #ffe0e0 100%);
       z-index: 2;
     }
 
     .card-back {
-      background: linear-gradient(135deg, #e0f7ff, #d1c4e9);
+      background: linear-gradient(135deg, #c0c7ca, #d1c4e9);
       transform: rotateY(180deg);
     }
 
@@ -155,7 +157,7 @@
       text-align: center;
       padding: 20px;
       font-size: 2rem;
-      color: #c12b99;
+      color: #801163;
       font-family: 'Great Vibes', cursive;
     }
 
@@ -201,14 +203,47 @@
 
     @media screen and (max-width: 600px) {
       h1 {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
+      }
+      .gallery {
+        grid-template-columns: repeat(3, minmax(140px, 1fr));
+        gap: 16px;
+        padding: 8px;
       }
       .card {
-        height: 600px;
+        height: 320px;
+      }
+      .card-front {
+        display: flex;
+        flex-direction: column;
+      }
+      .card-front img {
+        width: 100%;
+        flex: 0 0 85%;
+        object-fit: cover;
+      }
+      .card-back img {
+        height: 100%;
+      }
+      .message, #ageMessage {
+        font-size: 0.95rem;
+        padding: 6px 8px;
+        margin: 0;
+        line-height: 1.1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .message {
+        flex: 0 0 15%;
+        min-height: auto;
+      }
+      footer {
+        font-size: 1.1rem;
       }
       .controls button {
-        font-size: 9px;
-        padding: 3.5px 2px;
+        font-size: 8px;
+        padding: 5px 4px;
         font-weight: bold;
       }
     }
@@ -242,19 +277,32 @@
   </audio>
 
   <div class="gallery" id="gallery"></div>
-  <footer>With Love and Best Wishes 💖<br>Made By Vikash Prasad Sahu</footer>
+  <footer>With Love and Best Wishes 💖<br>Made With Lots of Love Only For Manshi</footer>
 
   <script>
     
     const imageQuotes = [
-      "A day to celebrate you! 🎈", "Let your smile shine! 😄",
-      "Sweet moments and sweeter memories 🍰", "Floating with happiness 🎈",
-      "A gift of love and joy 🎁", "Cherishing every celebration 🎊",
-      "Layers of love and cake 🎂", "Light up the sky like you light up lives ✨",
-      "Surrounded by those who care 💞", "A day full of joy and laughter 😍",
-      "Color your day with happiness 🎉", "Make a wish and blow out the candles 🕯️",
-      "Sprinkled with sweetness 🧁","Moments made magical just for you 🌈",
-      "Decorated with love and care 🎀", "Overflowing with blessings 🌟"
+      "A day to celebrate the beautiful soul you are! 🎂💖",
+  "Your smile makes every moment brighter 🌸✨",
+  "Sweet memories made with an even sweeter heart 🍰💕",
+  "Floating through happiness and birthday magic 🎈🎉",
+  "Wrapped in love, laughter, and endless joy 🎁💞",
+  "Every celebration feels special because of you 🎊💫",
+  "Layers of happiness, love, and birthday wishes 🎂🌷",
+  "Shine brighter than the candles on your cake ✨🕯️",
+  "Surrounded by love, warmth, and beautiful moments 💖🌹",
+  "A heart as lovely as yours deserves the happiest day 😍🎀",
+  "Painting your birthday with colors of joy 🎨🎉",
+  "Make a wish and let happiness bloom forever 🌟💫",
+  "Sprinkled with sweetness and magical memories 🧁💝",
+  "Moments made magical just because of your presence 🌈💖",
+  "Decorated with smiles, love, and endless blessings 🎀🌸",
+  "Overflowing with happiness, laughter, and dreams 🌟💞",
+  "Your happiness is the prettiest celebration of all 💕🎂",
+  "A little sparkle, a lot of love, and countless smiles ✨😊",
+  "Today is all about making your heart smile brighter 💖🎉",
+  "Every picture tells a story filled with love and joy 📸💫",
+  "May your life always bloom like the happiest celebration 🌷🎈"
     ];
 
     const gallery = document.getElementById('gallery');
@@ -264,11 +312,11 @@
       card.innerHTML = `
         <div class="card-inner">
           <div class="card-front">
-            <img src="photoes/${i + 1}front.png" alt="Front Image ${i + 1}">
+            <img src="photoes/${i + 1}_front.png" alt="Front Image ${i + 1}">
             <div class="message">${quote}</div>
           </div>
           <div class="card-back">
-            <img src="photoes/${i + 1}back.jpg" alt="Back Image ${i + 1}">
+            <img src="photoes/${i + 1}_back.jpg" alt="Back Image ${i + 1}" onerror="this.onerror=null; this.src=this.src.replace('.jpg','.png');">
           </div>
         </div>
       `;
